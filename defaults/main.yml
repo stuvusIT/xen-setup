@@ -1,0 +1,5 @@
+---
+xen_arch: amd64
+xen_reboot_delay: 10
+xen_reboot_timeout: 3000
+xen_cmdline: ""

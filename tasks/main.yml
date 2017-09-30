@@ -1,0 +1,43 @@
+---
+- name: Update repositories cache
+  apt:
+    update_cache: yes
+  changed_when: false
+
+- name: Install Xen
+  apt:
+    name: xen-system-{{ xen_arch }}
+  register: install
+
+- name: Fix GRUB configuration
+  replace:
+    path: /etc/default/grub.d/xen.cfg
+    regexp: Debian
+    replace: Ubuntu
+  register: grubcfg
+
+- name: Set Xen cmdline
+  lineinfile:
+    path: /etc/default/grub
+    regexp: "^GRUB_CMDLINE_XEN="
+    line: "GRUB_CMDLINE_XEN=\"{{ xen_cmdline }}\""
+  register: xencmdline
+
+- name: Update GRUB
+  command: update-grub
+  when: install.changed or grubcfg.changed or xencmdline.changed
+
+- name: Reboot
+  shell: sleep 2; systemctl reboot
+  # Don't wait for completion
+  async: 1
+  poll: 0
+  ignore_errors: true
+  when: install.changed
+
+- name: Wait for server to come back
+  become: no
+  wait_for_connection:
+    delay: "{{ xen_reboot_delay }}"
+    timeout: "{{ xen_reboot_timeout }}"
+  when: install.changed
