@@ -1,0 +1,24 @@
+galaxy_info:
+  author: Janne Heß
+  description: Set up a running Xen installation
+  company: stuvus (https://stuvus.uni-stuttgart.de)
+
+  license: CC-BY-SA
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+        - yakkety
+        - zesty
+        - artful
+
+  galaxy_tags:
+    - xen
+    - hypervisor
+    - dom0
+    - virtualization
+
+dependencies: []
