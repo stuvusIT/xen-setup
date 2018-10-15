@@ -6,7 +6,7 @@ When anything else happens (i.e. change of the cmdline), Xen will not reboot to 
 
 ## Requirements
 
-A recent Ubuntu installation with GRUB as the bootloader
+A recent Debian or Ubuntu installation with GRUB as the bootloader
 
 ## Role Variables
 
