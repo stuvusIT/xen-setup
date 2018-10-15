@@ -1,9 +1,4 @@
 ---
-- name: Update repositories cache
-  apt:
-    update_cache: yes
-  changed_when: false
-
 - name: Install Xen
   apt:
     name: xen-system-{{ xen_arch }}
