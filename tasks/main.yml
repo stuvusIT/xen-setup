@@ -4,24 +4,15 @@
     name: xen-system-{{ xen_arch }}
   register: install
 
-- name: Fix GRUB configuration
-  replace:
-    path: /etc/default/grub.d/xen.cfg
-    regexp: Debian
-    replace: Ubuntu
+- name: Write GRUB configuration and boot selection override
+  template:
+    src: xen.cfg.j2
+    dest: /etc/default/grub.d/xen.cfg
   register: grubcfg
-  when: ansible_distribution == "Ubuntu"
-
-- name: Set Xen cmdline
-  lineinfile:
-    path: /etc/default/grub
-    regexp: "^GRUB_CMDLINE_XEN="
-    line: "GRUB_CMDLINE_XEN=\"{{ xen_cmdline }}\""
-  register: xencmdline
 
 - name: Update GRUB
   command: update-grub
-  when: install.changed or grubcfg.changed or xencmdline.changed
+  when: install.changed or grubcfg.changed
 
 - name: Reboot
   shell: sleep 2; systemctl reboot

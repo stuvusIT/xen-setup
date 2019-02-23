@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+echo "Including Xen overrides from /etc/default/grub.d/xen.cfg"
+
+GRUB_CMDLINE_XEN="{{ xen_cmdline }}"
+if [ "$XEN_OVERRIDE_GRUB_DEFAULT" = "" ]; then
+        echo "WARNING: GRUB_DEFAULT changed to boot into Xen by default!"
+        echo "         Edit /etc/default/grub.d/xen.cfg to avoid this warning."
+        XEN_OVERRIDE_GRUB_DEFAULT=1
+fi
+if [ "$XEN_OVERRIDE_GRUB_DEFAULT" = "1" ]; then
+        GRUB_DEFAULT="{{ ansible_os_family }} GNU/Linux, with Xen hypervisor"
+fi
