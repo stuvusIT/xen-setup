@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+
+echo "Including Xen overrides from /etc/default/grub.d/xen.cfg"
+
+GRUB_CMDLINE_XEN="{{ xen_cmdline }}"
+GRUB_DEFAULT="{{ ansible_os_family }} GNU/Linux, with Xen hypervisor"
